@@ -23,6 +23,14 @@ TYPE = [
 
 ]
 
+class Total(models.Model):
+    summa_income = models.FloatField(verbose_name='summa_income')
+    summa_expenses = models.FloatField(verbose_name='summa_expenses')
+    total = models.FloatField(verbose_name='total')
+
+    def __str__(self):
+        return self.total
+
 class Source_types(models.Model):
     type = models.CharField(max_length=100, verbose_name='Type', choices=TYPE, default='expenses')
     responsible_user_id = models.ForeignKey(User, verbose_name='Responsible', related_name='car_to_user', null=True,
