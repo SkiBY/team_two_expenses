@@ -4,13 +4,21 @@ from django.core.mail import send_mail
 from . import models, forms
 
 def add_entry(request):
+    entry = models.Entry.object.all()
+    # return render(request, 'expenses/expenses.html', {'entry': entry, })
+    return render(request, '', {'entry': entry, })
+
+
 
     pass
 
-def summa_income (request):
+def summa_income(request):
 
-    pass
+    summa_income = sum(models.Entry.objects.filter(summa__type='income'))
+    if not summa_income:
+        raise Exception('No Income')
 
+    return render(request, 'expenses/income.html', {'expenses': summa_income, })
 
 def summa_expenses(request):
 
