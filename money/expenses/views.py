@@ -13,8 +13,11 @@ def summa_income (request):
 
 
 def summa_expenses(request):
+    summa_expenses = sum(models.Entry.summa.filter(summa__type='expenses'))
+    if not summa_expenses:
+        raise Exception ('Not Expenses')
 
-    pass
+    return render(request, 'expenses/income.html', {'expeses': summa_expenses,})
 
 def total(request):
 
