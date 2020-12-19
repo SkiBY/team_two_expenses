@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}All income{% endblock %}
+{% block body %}
+
+    <h2>All Income</h2>
+
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Summa</th>
+        <th>Currency</th>
+        <th>Date_income</th>
+
+    </tr>
+     {% for entry in entries %}
+    <tr>
+        <td>{{ entry.сategory }}</td>
+        <td>{{ entry.summa }}</td>
+        <td>{{ entry.currency }}</td>
+        <td>{{ entry.date_money }}</td>
+    </tr>
+
+    {% endfor %}
+     <tr>Total: {{ income_rub }}rub, {{ income_usd }}usd, {{ income_euro }}euro, {{ income_byn }}byn</tr>
+
+</table>
+
+
+{% endblock %}
