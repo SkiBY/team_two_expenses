@@ -12,13 +12,11 @@
     {% block menu %}
     <a href="{% url 'expenses:all_income_expenses' %}">All income/expenses</a> |
     <a href="{% url 'expenses:add_new_entry' %}">Add new entry</a> |
-     <a href="{% url 'expenses:all_income' %}">All income</a> |
+    <a href="{% url 'expenses:all_income' %}">All income</a> |
+    <a href="{% url 'expenses:all_expenses' %}">All expenses</a> |
     <a href="{% url 'expenses:choose_date' %}">Choose date</a> |
     <a href="{% url 'expenses:total_balance' %}">Total balance</a> |
     {% endblock %}
-
-
-
 
 </header>
 <body>

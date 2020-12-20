@@ -14,7 +14,7 @@ def add_entry(request):
 
 def all_income_expenses(request):
     entries = models.Entry.objects.all()
-    return render(request, 'expenses/total.html', {'entries': entries, })
+    return render(request, 'expenses/total.html', {'entries': entries,})
 
 
 def entry_details(request, entry_id: int):
@@ -45,7 +45,7 @@ def all_income(request):
         raise Exception('No Income')
     income_rub = entries.filter(currency='RUB').aggregate(Sum('summa', output_field=FloatField()))
     income_usd = entries.filter(currency='USD').aggregate(Sum('summa'))
-    income_euro = entries.filter(currency='EURO').aggregate(Sum('summa'))
+    income_euro = entries.filter(currency='EU').aggregate(Sum('summa'))
     income_byn = entries.filter(currency='BYN').aggregate(Sum('summa'))
 
     data = {'entries': entries,
@@ -66,10 +66,12 @@ def choose_date(request):
             date_money_min = clean_data['date_money_min']
             date_money_max = clean_data['date_money_max']
             entries = models.Entry.objects.filter(date_money__lt=date_money_max, date_money__gt=date_money_min)
-            return render(request, 'expenses/filter.html', {'entries': entries, 'flag': flag})
+            return render(request, 'expenses/filter.html', {'entries': entries, 'flag': flag,
+                                                            'date_money_min': date_money_min,
+                                                            'date_money_max': date_money_max,})
     else:
         form = forms.ChooseDate()
-        return render(request, 'expenses/filter.html', {'form': form, 'flag': flag})
+        return render(request, 'expenses/filter.html', {'form': form, 'flag': flag,})
 
 
 def total_balance(request):
@@ -100,5 +102,21 @@ def total_balance(request):
             balance -= i.summa * courses['EU']
 
     return render(request, 'expenses/total_balance.html', {'balance': balance, 'type_balance': type_balance})
+
+def all_expenses(request):
+    entries = models.Entry.objects.filter(type_inc_exp='expenses')
+    if not all_income:
+        raise Exception('No Expenses')
+    expenses_rub = entries.filter(currency='RUB').aggregate(Sum('summa', output_field=FloatField()))
+    expenses_usd = entries.filter(currency='USD').aggregate(Sum('summa'))
+    expenses_euro = entries.filter(currency='EU').aggregate(Sum('summa'))
+    expenses_byn = entries.filter(currency='BYN').aggregate(Sum('summa'))
+
+    data = {'entries': entries,
+            'expenses_rub':expenses_rub,
+            'expenses_usd':expenses_usd,
+            'expenses_euro':expenses_euro,
+            'expenses_byn':expenses_byn}
+    return render(request, 'expenses/expenses.html', context=data, )
 
 
