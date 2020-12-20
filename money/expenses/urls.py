@@ -5,7 +5,9 @@ from . import views
 app_name = 'expenses'
 
 urlpatterns = [
-    path('', views.add_entry, name='entry'),
+    path('operations/', views.add_entry, name='entry'),
+    path('', views.total, name='total'),
+
 
 
     ]

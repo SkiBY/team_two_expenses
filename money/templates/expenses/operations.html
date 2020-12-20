@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Operations{% endblock %}
+
+{% block body %}
+
+    <h1>Operations</h1>
+
+    {% for data in entry %}
+        <h2>{{data.type_inc_exp}}</h2>
+        <p>
+            Category: {{data.сategory}} <br>
+            Summa: {{data.summa}} {{data.currency}}<br>
+            Type: {{data.type_inc_exp}} <br>
+            User: {{data.responsible_user_id }} <br>
+            Date: {{data.date_money}} <br>
+            Date input: {{data.date_entry}} <br>
+
+        </p>
+    {% endfor %}
+
+
+{% endblock %}
