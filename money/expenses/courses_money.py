@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 def rate():
 
-    course = ['USD', 'RUB', 'EU']
+    course = ['USD', 'EU', 'RUB', 'BYN']
     response = requests.get('http://www.ecopress.by/ru/sect/61.html')
     soup = BeautifulSoup(response.text, features='lxml')
     money = soup.find_all('th', {'class': 'best'})
@@ -14,10 +14,11 @@ def rate():
         if i.text != '-':
             all_courses.append(float(i.text))
 
-    exchange_rates = {}
+    exchange_rates = {'BYN': 1}
     k = 1
-    for i in range(len(course)):
+    for i in range(len(course) - 1):
         exchange_rates[course[i]] = all_courses[k]
         k += 2
-
+    exchange_rates['RUB'] = exchange_rates['RUB'] * 0.01
     return exchange_rates
+

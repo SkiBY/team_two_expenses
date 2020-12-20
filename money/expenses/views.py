@@ -24,6 +24,7 @@ def entry_details(request, entry_id: int):
     return render(request, 'expenses/total.html', {'entry': entry, })
 
 
+@login_required
 def add_new_entry(request):
     if request.method == 'POST':
         form = forms.ExpensesForm(request.POST)
@@ -49,10 +50,10 @@ def all_income(request):
     income_byn = entries.filter(currency='BYN').aggregate(Sum('summa'))
 
     data = {'entries': entries,
-            'income_rub':income_rub,
-            'income_usd':income_usd,
-            'income_euro':income_euro,
-            'income_byn':income_byn}
+            'income_rub': income_rub['summa__sum'] if income_rub['summa__sum'] is not None else 0,
+            'income_usd': income_usd['summa__sum'] if income_usd['summa__sum'] is not None else 0,
+            'income_euro': income_euro['summa__sum'] if income_euro['summa__sum'] is not None else 0,
+            'income_byn': income_byn['summa__sum'] if income_byn['summa__sum'] is not None else 0}
     return render(request, 'expenses/income.html', context=data, )
 
 
@@ -71,7 +72,7 @@ def choose_date(request):
                                                             'date_money_max': date_money_max,})
     else:
         form = forms.ChooseDate()
-        return render(request, 'expenses/filter.html', {'form': form, 'flag': flag,})
+        return render(request, 'expenses/filter.html', {'form': form, 'flag': flag, })
 
 
 def total_balance(request):
@@ -80,6 +81,12 @@ def total_balance(request):
     total_inc = models.Entry.objects.filter(type_inc_exp='income')
     balance = 0
     type_balance = 'BYN'
+
+    form = forms.ChooseCurrency()
+    if request.GET:
+        tamp = request.GET['choose_courses']
+    else:
+        tamp = 'BYN'
 
     for i in total_inc:
         if type_balance == i.currency:
@@ -101,7 +108,17 @@ def total_balance(request):
         elif i.currency == 'EU':
             balance -= i.summa * courses['EU']
 
-    return render(request, 'expenses/total_balance.html', {'balance': balance, 'type_balance': type_balance})
+    return render(request, 'expenses/total_balance.html', {'balance': round(balance / courses[tamp], 2),
+                                                           'type_balance': type_balance, 'form': form, 'tamp': tamp})
+
+# def home_view(request):
+#     context ={}
+#     form = forms.ChooseCurrency()
+#     context['form']= form
+#     if request.GET:
+#         temp = request.GET['geeks_field']
+#         print(temp)
+#     return render(request, 'expenses/total_balance.html', context)
 
 def all_expenses(request):
     entries = models.Entry.objects.filter(type_inc_exp='expenses')
@@ -111,12 +128,13 @@ def all_expenses(request):
     expenses_usd = entries.filter(currency='USD').aggregate(Sum('summa'))
     expenses_euro = entries.filter(currency='EU').aggregate(Sum('summa'))
     expenses_byn = entries.filter(currency='BYN').aggregate(Sum('summa'))
-
     data = {'entries': entries,
-            'expenses_rub':expenses_rub,
-            'expenses_usd':expenses_usd,
-            'expenses_euro':expenses_euro,
-            'expenses_byn':expenses_byn}
+            'expenses_rub': expenses_rub['summa__sum'] if expenses_rub['summa__sum'] is not None else 0,
+            'expenses_usd': expenses_usd['summa__sum'] if expenses_usd['summa__sum'] is not None else 0,
+            'expenses_euro': expenses_euro['summa__sum'] if expenses_euro['summa__sum'] is not None else 0,
+            'expenses_byn': expenses_byn['summa__sum'] if expenses_byn['summa__sum'] is not None else 0}
     return render(request, 'expenses/expenses.html', context=data, )
+
+
 
 

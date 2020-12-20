@@ -7,8 +7,13 @@
 
     <h1>Total result</h1>
 
+        <form action="." method="GET">
+            {{ form }}
+            <input type = "submit" value = "Choose">
+        </form>
+
         <p>
-            Your balance is now {{balance}} {{type_balance}}
+            Your balance is now {{balance}} {{tamp}}
         </p>
 
 {% endblock %}

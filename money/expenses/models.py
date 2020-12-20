@@ -2,15 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 
-# INCOME = [
-#     ('salary','Salary'),
-#     ('gift','Gift'),
-#     ('lottery','Lottery'),
-# ]
-#
-# EXPENSES = [
-#     ('food','Food')
-# ]
 
 CURRENCY = [
     ('USD', 'USD'),
@@ -21,7 +12,6 @@ CURRENCY = [
 TYPE = [
     ('income', 'Income'),
     ('expenses', 'Expenses'),
-
 ]
 
 
