@@ -68,9 +68,6 @@ def choose_date(request):
             entries = models.Entry.objects.filter(date_money__lt=date_money_max, date_money__gt=date_money_min)
             return render(request, 'expenses/filter.html', {'entries': entries})
 
-
-
-
         #
         #     new_entry = form.save(commit=False)
         #     new_entry.responsible_user_id = request.user
@@ -86,9 +83,7 @@ def choose_date(request):
         # return render(request, 'expenses/add_new_entry.html', {'form': form})
 
 
-
-
-def total(request):
+def total_balance(request):
     courses = rate()
     total_exp = models.Entry.objects.filter(type_inc_exp='expenses')
     total_inc = models.Entry.objects.filter(type_inc_exp='income')
@@ -116,7 +111,8 @@ def total(request):
         elif i.currency == 'EU':
             balance -= i.summa * courses['EU']
 
-    return render(request, 'expenses/total.html', {'balance': balance, 'type_balance': type_balance} )
 
+
+    return render(request, 'expenses/total_balance.html', {'balance': balance, 'type_balance': type_balance} )
 
 
