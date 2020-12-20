@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Enter new income/expenses{% endblock %}
+{% block body %}
+
+<h3>Please enter your new income or expenses</h3>
+<form action="." method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+
+    </table>
+    <input type="submit" value="Create">
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Choose date{% endblock %}
+{% block body %}
+
+<h3>Please choose date</h3>
+<form action="." method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_p }}
+
+    </table>
+    <input type="submit" value="Choose">
+
+</form>
+
+{% endblock %}
