@@ -5,6 +5,7 @@
 
 <h3>Please choose date</h3>
 {% if flag %}
+<p> Your income/expenses from {{ date_money_min }} to  {{ date_money_max }}</p>
     {% for entry in entries %}
     <p>
         {{ entry.type_inc_exp }}
