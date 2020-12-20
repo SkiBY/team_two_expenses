@@ -4,14 +4,27 @@
 {% block body %}
 
 <h3>Please choose date</h3>
-<form action="." method="POST">
-    {% csrf_token %}
-    <table>
-        {{ form.as_p }}
+{% if flag %}
+    {% for entry in entries %}
+    <p>
+        {{ entry.type_inc_exp }}
+        {{ entry.сategory }}
+        {{ entry.summa }}
+        {{ entry.currency }}
+        {{ entry.date_money }}
+    </p>
+    {% endfor %}
 
-    </table>
-    <input type="submit" value="Choose">
+{% else %}
+    <form action="." method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_p }}
 
-</form>
+        </table>
+        <input type="submit" value="Choose">
+
+    </form>
+{% endif %}
 
 {% endblock %}
