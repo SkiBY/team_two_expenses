@@ -5,18 +5,24 @@ from .courses_money import rate
 from . import models
 from . import models, forms
 from django.db.models import Sum, FloatField
+#from .forms import CreateUserForm
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
 
+@login_required(login_url='login')
 def add_entry(request):
     entry = models.Entry.objects.all()
     return render(request, 'expenses/operations.html', {'entry': entry, })
 
 
+@login_required(login_url='login')
 def all_income_expenses(request):
     entries = models.Entry.objects.all()
     return render(request, 'expenses/total.html', {'entries': entries,})
 
 
+@login_required(login_url='login')
 def entry_details(request, entry_id: int):
     entry = models.Entry.objects.get(id=entry_id)
     if not entry:
@@ -24,7 +30,7 @@ def entry_details(request, entry_id: int):
     return render(request, 'expenses/total.html', {'entry': entry, })
 
 
-@login_required
+@login_required(login_url='login')
 def add_new_entry(request):
     if request.method == 'POST':
         form = forms.ExpensesForm(request.POST)
@@ -40,6 +46,7 @@ def add_new_entry(request):
         return render(request, 'expenses/add_new_entry.html', {'form': form})
 
 
+@login_required(login_url='login')
 def all_income(request):
     entries = models.Entry.objects.filter(type_inc_exp='income')
     if not all_income:
@@ -57,6 +64,7 @@ def all_income(request):
     return render(request, 'expenses/income.html', context=data, )
 
 
+@login_required(login_url='login')
 def choose_date(request):
     flag = False
     if request.method == 'POST':
@@ -75,14 +83,15 @@ def choose_date(request):
         return render(request, 'expenses/filter.html', {'form': form, 'flag': flag, })
 
 
+@login_required(login_url='login')
 def total_balance(request):
     courses = rate()
     total_exp = models.Entry.objects.filter(type_inc_exp='expenses')
     total_inc = models.Entry.objects.filter(type_inc_exp='income')
     balance = 0
     type_balance = 'BYN'
-
     form = forms.ChooseCurrency()
+
     if request.GET:
         tamp = request.GET['choose_courses']
     else:
@@ -109,17 +118,10 @@ def total_balance(request):
             balance -= i.summa * courses['EU']
 
     return render(request, 'expenses/total_balance.html', {'balance': round(balance / courses[tamp], 2),
-                                                           'type_balance': type_balance, 'form': form, 'tamp': tamp})
+                                                           'type_balance': type_balance, 'form': form, 'tamp': tamp, })
 
-# def home_view(request):
-#     context ={}
-#     form = forms.ChooseCurrency()
-#     context['form']= form
-#     if request.GET:
-#         temp = request.GET['geeks_field']
-#         print(temp)
-#     return render(request, 'expenses/total_balance.html', context)
 
+@login_required(login_url='login')
 def all_expenses(request):
     entries = models.Entry.objects.filter(type_inc_exp='expenses')
     if not all_income:
@@ -134,7 +136,3 @@ def all_expenses(request):
             'expenses_euro': expenses_euro['summa__sum'] if expenses_euro['summa__sum'] is not None else 0,
             'expenses_byn': expenses_byn['summa__sum'] if expenses_byn['summa__sum'] is not None else 0}
     return render(request, 'expenses/expenses.html', context=data, )
-
-
-
-

@@ -22,6 +22,7 @@ app_name = 'expenses'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('expenses.urls')),
-    path('user_login', views.user_login, name='user_login'),
-    #path('accounts/', include('django.contrib.auth.urls')),
+    path('register/', views.registerPage, name='register'),
+    path('login/', views.loginPage, name='login'),
+    path('logout/', views.logoutUser, name='logout'),
 ]

@@ -16,5 +16,4 @@ urlpatterns = [
     path('operations/', views.add_entry, name='entry'),
     path('total_balance/', views.total_balance, name='total_balance'),
 
-
     ]

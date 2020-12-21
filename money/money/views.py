@@ -1,24 +1,45 @@
 from django.shortcuts import render, redirect
 from . import forms
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
+from .forms import CreateUserForm
+from django.contrib import messages
 
 
-def user_login(request):
-    if request.method == 'POST':
-        form = forms.LoginForm(request.POST)
-        if form.is_valid():
-            clean_data = form.cleaned_data
-            user = authenticate(request, username=clean_data['login'], password=clean_data['password'])
-            if not user:
-                return HttpResponse('Bac Нету')
-            if user.is_active:
-                login(request, user)
-                return redirect('expenses: all_income_expenses')
-            else:
-                return HttpResponse('Your user is inactive.')
-        return render(request, 'login.html', {'form': form})
+def registerPage(request):
+    if request.user.is_authenticated:
+        return redirect('expenses:all_income_expenses')
     else:
-        form = forms.LoginForm()
+        form = CreateUserForm()
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                user = form.cleaned_data.get('username')
+                messages.success(request, 'Account was created for ' + user)
+                return redirect('login')
+        context = {'form': form}
+        return render(request, 'account/register.html', context)
 
-        return render(request, 'login.html', {'form': form})
+
+def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('expenses:all_income_expenses')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('expenses:all_income_expenses')
+            else:
+                messages.info(request, 'Username OR password is incorrect')
+        context = {}
+        return render(request, 'account/login.html', context)
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login')

@@ -1,5 +1,7 @@
 from django import forms
 from . import models
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class ExpensesForm(forms.ModelForm):
@@ -16,6 +18,3 @@ class ChooseDate(forms.Form):
 
 class ChooseCurrency(forms.Form):
     choose_courses = forms.ChoiceField(choices=models.CURRENCY)
-
-
-
