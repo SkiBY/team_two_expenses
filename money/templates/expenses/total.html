@@ -20,7 +20,11 @@
         <td>{{ entry.summa }}</td>
         <td>{{ entry.currency }}</td>
         <td>{{ entry.date_money }}</td>
+        <td><a href="/delete/{{ entry.id }}">Delete</a></td>
+        <td> | </td>
+        <td><a href="/update/{{ entry.id }}">Update</a></td>
     </tr>
+
     {% endfor %}
 </table>
 

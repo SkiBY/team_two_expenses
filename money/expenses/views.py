@@ -1,8 +1,8 @@
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from .courses_money import rate
-from . import models
 from . import models, forms
 from django.db.models import Sum, FloatField
 
@@ -14,11 +14,11 @@ def add_entry(request):
 
 def all_income_expenses(request):
     entries = models.Entry.objects.all()
-    return render(request, 'expenses/total.html', {'entries': entries,})
+    return render(request, 'expenses/total.html', {'entries': entries})
 
 
-def entry_details(request, entry_id: int):
-    entry = models.Entry.objects.get(id=entry_id)
+def entry_details(request, id: int):
+    entry = models.Entry.objects.get(id=id)
     if not entry:
         raise Exception('No such income/expenses')
     return render(request, 'expenses/total.html', {'entry': entry, })
@@ -134,6 +134,34 @@ def all_expenses(request):
             'expenses_euro': expenses_euro['summa__sum'] if expenses_euro['summa__sum'] is not None else 0,
             'expenses_byn': expenses_byn['summa__sum'] if expenses_byn['summa__sum'] is not None else 0}
     return render(request, 'expenses/expenses.html', context=data, )
+
+def delete_entry(request, id):
+
+    entry = models.Entry.objects.get(id=id)
+    entry.delete()
+    entries = models.Entry.objects.all()
+    return render(request, 'expenses/total.html', {'entries': entries, })
+
+
+def update_entry(request, id):
+    entry = models.Entry.objects.get(id=id)
+    form = forms.ExpensesForm(request.POST or None, instance=entry)
+
+
+    if form.is_valid():
+        form.save()
+        return redirect('expenses:entry_details', entry.id)
+    return render(request, 'expenses/add_new_entry.html', {'form': form})
+
+
+
+
+
+
+
+
+
+
 
 
 
