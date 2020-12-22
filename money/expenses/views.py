@@ -24,8 +24,8 @@ def all_income_expenses(request):
 
 
 @login_required(login_url='login')
-def entry_details(request, entry_id: int):
-    entry = models.Entry.objects.get(id=entry_id)
+def entry_details(request, id: int):
+    entry = models.Entry.objects.get(id=id)
     if not entry:
         raise Exception('No such income/expenses')
     return render(request, 'expenses/total.html', {'entry': entry, })

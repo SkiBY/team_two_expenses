@@ -1,0 +1,25 @@
+body {
+background-color: LightCyan;
+}
+
+table {
+border: 3px solid grey;
+width: 50%;
+border-spacing: 0;
+
+}
+
+tr:nth-child(2n){
+background-color: GreenYellow;
+height: 20px;
+}
+
+tr:nth-child(2n+1){
+background-color: MediumAquamarine;
+height: 20px;
+}
+
+caption {
+font-weight: bolder;
+font-size: 20px;
+}
