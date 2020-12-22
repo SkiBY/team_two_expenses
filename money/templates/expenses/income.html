@@ -11,7 +11,6 @@
         <th>Summa</th>
         <th>Currency</th>
         <th>Date_income</th>
-
     </tr>
      {% for entry in entries %}
     <tr>
@@ -22,9 +21,8 @@
     </tr>
 
     {% endfor %}
-     <tr>Total: {{ income_rub }} RUB, {{ income_usd }} USD, {{ income_euro }} EURO, {{ income_byn }} BYN</tr>
-
 </table>
+<caption>Total: {{ income_rub }} RUB, {{ income_usd }} USD, {{ income_euro }} EURO, {{ income_byn }} BYN</caption>
 
 
 {% endblock %}

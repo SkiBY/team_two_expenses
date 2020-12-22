@@ -146,11 +146,9 @@ def delete_entry(request, id):
 def update_entry(request, id):
     entry = models.Entry.objects.get(id=id)
     form = forms.ExpensesForm(request.POST or None, instance=entry)
-
-
     if form.is_valid():
         form.save()
-        return redirect('expenses:entry_details', entry.id)
+        return redirect('expenses:update_entry', entry.id)
     return render(request, 'expenses/add_new_entry.html', {'form': form})
 
 
