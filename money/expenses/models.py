@@ -25,7 +25,8 @@ class Category(models.Model):
 class Entry(models.Model):
 
     summa = models.FloatField()
-    сategory = models.ForeignKey(Category, related_name='entry_to_category', verbose_name='category', on_delete=models.RESTRICT)
+    category = models.ForeignKey(Category, related_name='entry_to_category', verbose_name='category', on_delete=models.RESTRICT)
+    notes = models.TextField(max_length=100, verbose_name='Notes', blank=True)
     currency = models.CharField(max_length=100, verbose_name='Currency', choices=CURRENCY, default='rub')
     type_inc_exp = models.CharField(max_length=100, verbose_name='Type', choices=TYPE, default='expenses')
     responsible_user_id = models.ForeignKey(User, verbose_name='Responsible', related_name='car_to_user', null=True,

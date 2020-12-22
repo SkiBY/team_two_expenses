@@ -47,8 +47,8 @@ def add_new_entry(request):
         return render(request, 'expenses/add_new_entry.html', {'form': form})
 
 
-@login_required(login_url='login')
-def all_income(request):
+
+def calculate_income():
     entries = models.Entry.objects.filter(type_inc_exp='income')
     if not all_income:
         raise Exception('No Income')
@@ -62,6 +62,11 @@ def all_income(request):
             'income_usd': income_usd['summa__sum'] if income_usd['summa__sum'] is not None else 0,
             'income_euro': income_euro['summa__sum'] if income_euro['summa__sum'] is not None else 0,
             'income_byn': income_byn['summa__sum'] if income_byn['summa__sum'] is not None else 0}
+    return data
+
+@login_required(login_url='login')
+def all_income(request):
+    data = calculate_income()
     return render(request, 'expenses/income.html', context=data, )
 
 
@@ -151,8 +156,8 @@ def update_entry(request, id):
     form = forms.ExpensesForm(request.POST or None, instance=entry)
     if form.is_valid():
         form.save()
-        return redirect('expenses:update_entry', entry.id)
-    return render(request, 'expenses/add_new_entry.html', {'form': form})
+        return redirect('expenses:entry_details', entry.id)
+    return render(request, 'expenses/update.html', {'form': form, 'entry': entry})
 
 
 
