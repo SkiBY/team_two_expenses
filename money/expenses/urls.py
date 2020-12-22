@@ -18,6 +18,6 @@ urlpatterns = [
     path('delete/<int:id>', views.delete_entry, name='delete'),
 
     path('update/<int:id>', views.update_entry, name='update_entry'),
-
+    # path('update/', views.update_entry, name='entry_details'),
 
     ]
